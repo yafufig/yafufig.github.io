@@ -1,0 +1,11 @@
+{
+  "name": "dmitrii-iarochkin-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "esbuild hero-scene.js --bundle --minify --format=esm --target=chrome100,safari15 --legal-comments=eof --outfile=assets/hero-scene.bundle.js"
+  },
+  "dependencies": {"three": "0.180.0"},
+  "devDependencies": {"esbuild": "0.25.10"}
+}

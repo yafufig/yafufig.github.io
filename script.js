@@ -6,7 +6,8 @@ function focusWork(focus) {
 }
 buttons.forEach(b => b.addEventListener('click', () => focusWork(b.dataset.focus)));
 function revealAnchor() {
-  const current = cases.find(c => '#' + c.id === location.hash);
+  const target = document.getElementById(location.hash.slice(1));
+  const current = target && cases.find(c => c === target || c.contains(target));
   if (current) { focusWork('all'); current.querySelector('details').open = true; }
 }
 window.addEventListener('hashchange', revealAnchor);

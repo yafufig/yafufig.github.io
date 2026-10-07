@@ -12,3 +12,48 @@ function revealAnchor() {
 }
 window.addEventListener('hashchange', revealAnchor);
 revealAnchor();
+
+const awardSummary = document.querySelector('.award-summary');
+const awardInfo = awardSummary.querySelector('.award-info');
+const awardTooltip = document.getElementById('award-results');
+let awardsPinned = false;
+function showAwards() {
+  awardTooltip.hidden = false;
+  awardInfo.setAttribute('aria-expanded', 'true');
+  awardTooltip.classList.remove('above');
+  const roomBelow = window.innerHeight - awardSummary.getBoundingClientRect().bottom;
+  const requiredRoom = awardTooltip.getBoundingClientRect().height + 16;
+  if (roomBelow < requiredRoom && awardSummary.getBoundingClientRect().top > requiredRoom) {
+    awardTooltip.classList.add('above');
+  }
+}
+function hideAwards() {
+  awardTooltip.hidden = true;
+  awardInfo.setAttribute('aria-expanded', 'false');
+}
+awardInfo.addEventListener('pointerenter', event => {
+  if (event.pointerType !== 'touch') showAwards();
+});
+awardSummary.addEventListener('pointerleave', () => {
+  if (!awardsPinned && !awardSummary.contains(document.activeElement)) hideAwards();
+});
+awardInfo.addEventListener('focus', showAwards);
+awardInfo.addEventListener('blur', () => {
+  if (!awardsPinned) hideAwards();
+});
+awardInfo.addEventListener('click', () => {
+  awardsPinned = !awardsPinned;
+  if (awardsPinned) showAwards(); else hideAwards();
+});
+document.addEventListener('pointerdown', event => {
+  if (!awardSummary.contains(event.target)) {
+    awardsPinned = false;
+    hideAwards();
+  }
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') {
+    awardsPinned = false;
+    hideAwards();
+  }
+});
